@@ -48,3 +48,6 @@ scr_id = nickname_ids[scr_nickname]#しまさんのID
 dest_id = nickname_ids[dest_nickname]#私のID
 
 print(find_steps(scr_id, dest_id))
+
+#①ニックネームからIDを取得する際にいちいちファイルを開かなくていいようにしました
+#②ver.1では既に調べているアカウントか判断するために新たな関数&stackを用いていましたが、setを用いることで簡潔にしました
