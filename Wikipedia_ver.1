@@ -1,0 +1,50 @@
+import csv
+
+def create_nickname_id_mapping(filename):#ニックネームをキーとし、値にIDを保持するdictを作る関数
+  ids = {}
+  with open(filename) as f:
+    for line in f.readlines():
+      id, nickname = line.strip().split('\t')
+      ids[nickname] = str(id)
+  return ids
+
+
+def get_following(user_id):#IDを受け取って、そのIDがフォローしているIDのリストを返す
+    following_list = []
+    with open('/Users/harano/Desktop/wikipedia_links/links.txt') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            if user_id == row[0]:
+                following_list.append(row[1])
+    return following_list   
+    
+
+def find_steps(src_id, dest_id):#始点と終点のIDを受け取って、幅優先探索を行う
+    queue = []
+    steps = {}
+    visited = set()
+    visited.add(src_id)
+    queue.append(src_id)
+    steps[src_id] =0
+    while len(queue)>0:
+        current_id = queue.pop(0)
+        for neighbor_id in get_following(current_id):
+            if neighbor_id in visited:
+                continue
+            else:
+                steps[neighbor_id] = steps[current_id]+1
+                visited.add(neighbor_id)
+                queue.append(neighbor_id)
+        if current_id == dest_id:
+            return steps[current_id]
+    return -1
+        
+
+scr_nickname = "英語"
+dest_nickname = "日本語"
+
+nickname_ids = create_nickname_id_mapping('/Users/harano/Desktop/wikipedia_links/pages.txt')
+scr_id = nickname_ids[scr_nickname]
+dest_id = nickname_ids[dest_nickname]
+print(nickname_ids)
+print(dest_id)
